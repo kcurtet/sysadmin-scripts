@@ -49,3 +49,6 @@ else
   echo "Gateway:   $(route -n | awk '$1 == "0.0.0.0" {print $2; exit}')"
 fi
 echo "DNS:       $(awk '/^nameserver/ {printf "%s ", $2}' /etc/resolv.conf 2>/dev/null)"
+
+section "Logged in users"
+who || true
