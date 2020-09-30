@@ -9,6 +9,7 @@ Small, commented Bash scripts for everyday Linux support and administration. No 
 | [`backup.sh`](backup.sh) | Incremental `rsync` snapshots: every snapshot looks complete but only stores what changed. |
 | [`netdiag.sh`](netdiag.sh) | "The Internet is down" checklist, layer by layer: interface, IP, gateway, Internet, DNS. Tells you where it breaks. |
 | [`check-services.sh`](check-services.sh) | Checks that services are running (systemd or SysV). Can restart them. |
+| [`ssh-failed-logins.sh`](ssh-failed-logins.sh) | Top IPs and usernames behind failed SSH logins. |
 
 ## Usage
 
