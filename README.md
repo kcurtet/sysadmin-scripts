@@ -25,6 +25,24 @@ chmod +x *.sh
 ./check-services.sh sshd nginx
 ```
 
+## Example: `netdiag.sh`
+
+```
+== 1. Network interfaces ==
+  [ OK ] Interfaces up: eth0
+== 2. IP addresses ==
+  [ OK ] eth0: 192.168.1.34/24
+== 3. Default gateway ==
+  [ OK ] Gateway 192.168.1.1 is reachable.
+== 4. Internet (no DNS) ==
+  [ OK ] Internet is reachable (1.1.1.1 answers).
+== 5. DNS resolution ==
+  [FAIL] Internet works but names do not resolve. Check the DNS servers:
+        nameserver 192.168.1.1
+```
+
+Here the problem is obvious: the connection works, but the router's DNS is not answering.
+
 ## Requirements
 
 Bash 4+, `iproute2`, `iputils` (ping) and `rsync` for backups. Tested on Ubuntu 18.04 and CentOS 7.
