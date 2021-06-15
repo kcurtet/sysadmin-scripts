@@ -24,6 +24,12 @@ echo "== Top $TOP directories under $TARGET =="
 du -xh --max-depth=2 "$TARGET" 2>/dev/null | sort -rh | head -n "$TOP"
 
 echo
+echo "== Usual suspects =="
+for dir in "$HOME/.cache" "$HOME/.local/share/Trash" /var/log /var/cache/apt/archives /var/cache/yum /tmp; do
+  [ -d "$dir" ] && printf '%8s  %s\n' "$(du -sh "$dir" 2>/dev/null | cut -f1)" "$dir"
+done
+
+echo
 echo "Ways to free some space:"
 echo "  - User cache:         rm -rf ~/.cache/*   (rebuilt on demand)"
 echo "  - systemd journal:    sudo journalctl --vacuum-size=200M"
