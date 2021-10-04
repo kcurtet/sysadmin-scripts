@@ -11,6 +11,7 @@ Small, commented Bash scripts for everyday Linux support and administration. No 
 | [`check-services.sh`](check-services.sh) | Checks that services are running (systemd or SysV). Can restart them. |
 | [`ssh-failed-logins.sh`](ssh-failed-logins.sh) | Top IPs and usernames behind failed SSH logins. |
 | [`ssl-expiry.sh`](ssl-expiry.sh) | Days left on TLS certificates, warns before they expire. |
+| [`user-audit.sh`](user-audit.sh) | Local accounts, last logins, sudoers, UID 0 and empty passwords. |
 
 ## Usage
 
