@@ -14,7 +14,7 @@
 #   0 3 * * * /opt/sysadmin-scripts/backup.sh /home/kevin/docs /mnt/backup/docs 7
 #
 
-set -e
+set -euo pipefail
 
 if [ $# -lt 2 ]; then
   echo "Usage: $0 SOURCE DEST [KEEP]" >&2
