@@ -15,9 +15,16 @@ set -u
 TEST_IP="${1:-1.1.1.1}"
 TEST_NAME="example.com"
 
-ok()   { echo "  [ OK ] $1"; }
-fail() { echo "  [FAIL] $1"; }
-warn() { echo "  [WARN] $1"; }
+# Colors only when writing to a terminal (not when piped to a file)
+if [ -t 1 ]; then
+  GREEN=$'\e[32m'; RED=$'\e[31m'; YELLOW=$'\e[33m'; NC=$'\e[0m'
+else
+  GREEN=""; RED=""; YELLOW=""; NC=""
+fi
+
+ok()   { printf '  %s[ OK ]%s %s\n' "$GREEN"  "$NC" "$1"; }
+fail() { printf '  %s[FAIL]%s %s\n' "$RED"    "$NC" "$1"; }
+warn() { printf '  %s[WARN]%s %s\n' "$YELLOW" "$NC" "$1"; }
 
 for cmd in ip ping getent; do
   command -v "$cmd" > /dev/null || { echo "Missing '$cmd' (iproute2 / iputils packages)." >&2; exit 1; }
@@ -76,4 +83,4 @@ else
 fi
 
 echo
-echo "All good: the network works end to end."
+echo "${GREEN}All good: the network works end to end.${NC}"
