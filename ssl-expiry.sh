@@ -6,13 +6,20 @@
 # Exit code is 1 if any certificate expires within the warning window.
 #
 # Usage: ./ssl-expiry.sh host[:port] ...
-#        ./ssl-expiry.sh example.com mail.example.com:993
+#        ./ssl-expiry.sh -f hosts.txt     (one host[:port] per line, # comments ok)
+#        WARN_DAYS=30 ./ssl-expiry.sh example.com mail.example.com:993
 #
 
 set -u
 
 WARN_DAYS="${WARN_DAYS:-21}"
-HOSTS=("$@")
+
+if [ "${1:-}" = "-f" ]; then
+  [ -r "${2:-}" ] || { echo "Cannot read hosts file '${2:-}'" >&2; exit 2; }
+  mapfile -t HOSTS < <(grep -vE '^\s*(#|$)' "$2")
+else
+  HOSTS=("$@")
+fi
 
 if [ ${#HOSTS[@]} -eq 0 ]; then
   echo "Usage: $0 host[:port] ..." >&2
