@@ -12,17 +12,18 @@ set -u
 
 TOP="${1:-10}"
 
-# Debian/Ubuntu log to auth.log, RHEL/CentOS to secure
+# Debian/Ubuntu log to auth.log, RHEL/CentOS to secure. Newer systems
+# may only have the systemd journal, so fall back to that.
 if [ -r /var/log/auth.log ]; then
-  LOGFILE=/var/log/auth.log
+  read_log() { cat /var/log/auth.log; }
 elif [ -r /var/log/secure ]; then
-  LOGFILE=/var/log/secure
+  read_log() { cat /var/log/secure; }
+elif command -v journalctl > /dev/null; then
+  read_log() { journalctl -q --no-pager -u ssh -u sshd --since "-7 days" 2>/dev/null; }
 else
-  echo "Cannot read auth.log or secure (run with sudo?)" >&2
+  echo "No auth.log, secure or journal available (run with sudo?)" >&2
   exit 1
 fi
-
-read_log() { cat "$LOGFILE"; }
 
 FAILED=$(read_log | grep -E 'Failed password|Invalid user')
 
