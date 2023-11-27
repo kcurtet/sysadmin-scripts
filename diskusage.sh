@@ -24,6 +24,11 @@ echo "== Top $TOP directories under $TARGET =="
 du -xh --max-depth=2 "$TARGET" 2>/dev/null | sort -rh | head -n "$TOP"
 
 echo
+echo "== Inode usage =="
+# A disk can be "full" with free space left if it runs out of inodes
+df -iP -x tmpfs -x devtmpfs -x squashfs -x overlay | awk 'NR==1 || $5+0 >= 80'
+
+echo
 echo "== Usual suspects =="
 for dir in "$HOME/.cache" "$HOME/.local/share/Trash" /var/log /var/cache/apt/archives /var/cache/yum /tmp; do
   [ -d "$dir" ] && printf '%8s  %s\n' "$(du -sh "$dir" 2>/dev/null | cut -f1)" "$dir"
