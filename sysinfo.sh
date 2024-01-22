@@ -38,6 +38,9 @@ free -h | awk 'NR==1 || /^Mem|^Swap/'
 section "Disks"
 # Real filesystems only, skip tmpfs and container overlays
 df -hP -x tmpfs -x devtmpfs -x squashfs -x overlay 2>/dev/null
+# Shout if any filesystem is above 90%
+df -P -x tmpfs -x devtmpfs -x squashfs -x overlay 2>/dev/null \
+  | awk 'NR>1 {gsub("%","",$5); if ($5 >= 90) print "WARNING: " $6 " is at " $5 "%"}'
 
 section "Network"
 if command -v ip > /dev/null; then
