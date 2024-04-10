@@ -1,0 +1,2 @@
+# Scripts source /etc/os-release and similar files at runtime
+disable=SC1091
