@@ -26,7 +26,7 @@ chmod +x *.sh
 ./diskusage.sh / 15
 ./backup.sh /home/kevin/docs /mnt/backup/docs 7
 ./netdiag.sh
-./check-services.sh sshd nginx
+sudo ./check-services.sh -r sshd nginx
 ./ssl-expiry.sh example.com mail.example.com:993
 ./port-check.sh db01 3306
 ```
