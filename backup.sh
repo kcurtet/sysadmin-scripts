@@ -10,6 +10,9 @@
 # Usage: ./backup.sh SOURCE DEST [KEEP]
 #        ./backup.sh /home/kevin/docs /mnt/backup/docs 7
 #
+# Exclusions are read from DEST/excludes.txt if it exists (one rsync
+# pattern per line), otherwise a sane default list is used.
+#
 # Cron example (every day at 03:00):
 #   0 3 * * * /opt/sysadmin-scripts/backup.sh /home/kevin/docs /mnt/backup/docs 7
 #
@@ -44,8 +47,15 @@ log "Start: $SRC -> $NEW"
 LINK_OPT=()
 [ -d "$LATEST" ] && LINK_OPT=(--link-dest="$LATEST")
 
+EXCLUDE_OPT=()
+if [ -f "$DEST/excludes.txt" ]; then
+  EXCLUDE_OPT=(--exclude-from="$DEST/excludes.txt")
+else
+  EXCLUDE_OPT=(--exclude='.cache/' --exclude='node_modules/' --exclude='*.tmp' --exclude='*.swp')
+fi
+
 rsync -a --delete \
-  --exclude='.cache/' --exclude='*.tmp' \
+  "${EXCLUDE_OPT[@]}" \
   "${LINK_OPT[@]}" \
   "$SRC/" "$NEW/"
 
