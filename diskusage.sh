@@ -34,9 +34,16 @@ for dir in "$HOME/.cache" "$HOME/.local/share/Trash" /var/log /var/cache/apt/arc
   [ -d "$dir" ] && printf '%8s  %s\n' "$(du -sh "$dir" 2>/dev/null | cut -f1)" "$dir"
 done
 
+if command -v docker > /dev/null; then
+  echo
+  echo "== Docker images and containers =="
+  docker system df 2>/dev/null || true
+fi
+
 echo
 echo "Ways to free some space:"
 echo "  - User cache:         rm -rf ~/.cache/*   (rebuilt on demand)"
 echo "  - systemd journal:    sudo journalctl --vacuum-size=200M"
 echo "  - Old packages (apt): sudo apt-get autoremove && sudo apt-get clean"
 echo "  - Old packages (yum): sudo yum clean all"
+echo "  - Docker leftovers:   docker system prune"
