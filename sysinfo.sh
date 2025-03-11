@@ -31,6 +31,10 @@ CPU=$(awk -F': ' '/model name/ {print $2; exit}' /proc/cpuinfo)
 echo "Model:     ${CPU:-unknown}"
 echo "Cores:     $(nproc)"
 echo "Load avg:  $(cut -d' ' -f1-3 /proc/loadavg) (1, 5, 15 min)"
+if command -v systemd-detect-virt > /dev/null; then
+  # Prints "none" on bare metal
+  echo "Virt:      $(systemd-detect-virt 2>/dev/null)"
+fi
 
 section "Memory"
 free -h | awk 'NR==1 || /^Mem|^Swap/'
