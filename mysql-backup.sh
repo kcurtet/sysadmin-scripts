@@ -9,12 +9,14 @@
 #   user=backup
 #   password=secret
 #
-# Usage: ./mysql-backup.sh DEST_DIR
+# Usage: ./mysql-backup.sh DEST_DIR [DAYS_TO_KEEP]
+#        ./mysql-backup.sh /var/backups/mysql 14
 #
 
 set -euo pipefail
 
 DEST="${1:?Usage: $0 DEST_DIR}"
+KEEP_DAYS="${2:-14}"
 STAMP=$(date '+%Y-%m-%d_%H%M')
 OUT="$DEST/$STAMP"
 
@@ -27,7 +29,11 @@ DBS=$(mysql -N -e 'SHOW DATABASES' | grep -vE '^(information_schema|performance_
 for db in $DBS; do
   echo "$(date '+%F %T') dumping $db"
   # --single-transaction gives a consistent dump of InnoDB tables without locking
-  mysqldump --single-transaction --routines --triggers --events "$db" > "$OUT/$db.sql"
+  mysqldump --single-transaction --routines --triggers --events "$db" | gzip > "$OUT/$db.sql.gz"
 done
+
+# Drop dumps older than KEEP_DAYS
+find "$DEST" -mindepth 1 -maxdepth 1 -type d -name '????-??-??_????' -mtime +"$KEEP_DAYS" \
+  -exec rm -rf -- {} +
 
 echo "$(date '+%F %T') done: $(du -sh "$OUT" | cut -f1) in $OUT"
