@@ -31,6 +31,8 @@ sudo ./check-services.sh -r sshd nginx
 ./port-check.sh db01 3306
 ```
 
+See [`cron/crontab.example`](cron/crontab.example) for ready-to-use cron entries.
+
 ## Example: `netdiag.sh`
 
 ```
