@@ -1,0 +1,19 @@
+# Example crontab for sysadmin-scripts.
+# Install with: sudo crontab -e   (and paste the lines you need)
+#
+# Assumes the repo is cloned to /opt/sysadmin-scripts.
+#
+# m  h  dom mon dow  command
+MAILTO=root
+
+# Nightly home snapshots at 03:00, keep a week
+0  3  *   *   *    /opt/sysadmin-scripts/backup.sh /home /mnt/backup/home 7 > /dev/null
+
+# MySQL dumps at 02:30, keep two weeks
+30 2  *   *   *    /opt/sysadmin-scripts/mysql-backup.sh /var/backups/mysql 14 > /dev/null
+
+# Make sure the important stuff is up every 5 minutes, restart if not
+*/5 * *   *   *    /opt/sysadmin-scripts/check-services.sh -r sshd cron nginx > /dev/null
+
+# Certificate check every Monday morning (cron mails the output on failure)
+0  8  *   *   1    /opt/sysadmin-scripts/ssl-expiry.sh -f /etc/sysadmin-scripts/ssl-hosts.txt || true
