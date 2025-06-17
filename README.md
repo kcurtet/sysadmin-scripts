@@ -13,6 +13,7 @@ Small, commented Bash scripts for everyday Linux support and administration. No 
 | [`ssl-expiry.sh`](ssl-expiry.sh) | Days left on TLS certificates, warns before they expire. |
 | [`user-audit.sh`](user-audit.sh) | Local accounts, last logins, sudoers, UID 0 and empty passwords. |
 | [`mysql-backup.sh`](mysql-backup.sh) | One `mysqldump` per database, credentials from `~/.my.cnf`. |
+| [`postgres-backup.sh`](postgres-backup.sh) | One `pg_dump` per database plus roles/tablespaces, credentials from `~/.pgpass`. |
 | [`port-check.sh`](port-check.sh) | Is a TCP port reachable? Pure bash, no `nc` or `telnet` needed. |
 
 ## Usage
@@ -28,6 +29,7 @@ chmod +x *.sh
 ./netdiag.sh
 sudo ./check-services.sh -r sshd nginx
 ./ssl-expiry.sh example.com mail.example.com:993
+sudo -u postgres ./postgres-backup.sh /var/backups/postgres 14
 ./port-check.sh db01 3306
 ```
 

@@ -12,6 +12,9 @@ MAILTO=root
 # MySQL dumps at 02:30, keep two weeks
 30 2  *   *   *    /opt/sysadmin-scripts/mysql-backup.sh /var/backups/mysql 14 > /dev/null
 
+# PostgreSQL dumps at 02:45 as the postgres user, keep two weeks
+45 2  *   *   *    sudo -u postgres /opt/sysadmin-scripts/postgres-backup.sh /var/backups/postgres 14 > /dev/null
+
 # Make sure the important stuff is up every 5 minutes, restart if not
 */5 * *   *   *    /opt/sysadmin-scripts/check-services.sh -r sshd cron nginx > /dev/null
 
