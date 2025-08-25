@@ -53,7 +53,9 @@ Here the problem is obvious: the connection works, but the router's DNS is not a
 
 ## Requirements
 
-Bash 4+, `iproute2`, `iputils` (ping) and `rsync` for backups. Tested on Ubuntu 18.04 and CentOS 7.
+Bash 4+, `iproute2`, `iputils` (ping), `rsync` for backups, `openssl` for certificate checks and the MySQL client tools for database dumps.
+
+Tested on Ubuntu 18.04 / 20.04 / 22.04 / 24.04, Debian 10-12, CentOS 7 and Rocky Linux 8/9.
 
 All scripts pass [ShellCheck](https://www.shellcheck.net/) (`make lint`). `make install` copies them to `/opt/sysadmin-scripts`.
 
