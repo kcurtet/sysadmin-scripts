@@ -8,6 +8,7 @@
 # Usage: ./port-check.sh host port [port ...]
 #        ./port-check.sh db01 3306
 #        ./port-check.sh web01 22 80 443
+#        TIMEOUT=10 ./port-check.sh vpn.example.com 1194
 #
 
 set -u
@@ -19,7 +20,7 @@ fi
 
 HOST="$1"
 shift
-TIMEOUT=3
+TIMEOUT="${TIMEOUT:-3}"
 
 RC=0
 for port in "$@"; do
